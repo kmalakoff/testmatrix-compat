@@ -1,0 +1,225 @@
+# Testmatrix
+
+[![Travis CI](https://img.shields.io/travis/jorgebucaran/testmatrix/master.svg)](https://travis-ci.org/jorgebucaran/testmatrix)
+[![Codecov](https://img.shields.io/codecov/c/github/jorgebucaran/testmatrix/master.svg)](https://codecov.io/gh/jorgebucaran/testmatrix)
+[![npm](https://img.shields.io/npm/v/testmatrix.svg)](https://www.npmjs.org/package/testmatrix)
+
+Testmatrix is a declarative test runner for JavaScript.
+
+## Installation
+
+<pre>
+npm i <a href=https://www.npmjs.com/package/testmatrix>testmatrix</a>
+</pre>
+
+## Getting Started
+
+Let's start with a basic test to learn how Testmatrix works. Create a new `test.js` file and export your test suite.
+
+```js
+exports.default = {
+  "array.indexOf()": [
+    {
+      test: "returns the index at which a given element is in the array",
+      assert: (a, b) => a === b,
+      actual: ["A", "B", "C"].indexOf("A"),
+      expected: 0
+    }
+  ]
+}
+```
+
+Every key in the suite object designates a test group. Groups are arrays of tests, where each test is represented as a plain object. To determine if a test passes or not, we'll compare if the actual and expected values match using the specified assert function. You can use your own assert function or choose from the included ones: `equal`, `notEqual`, `deepEqual` and `notDeepEqual`.
+
+```js
+const {
+  equal,
+  notEqual,
+  deepEqual,
+  notDeepEqual
+} = require("testmatrix")
+```
+
+Now add a test script to your package.json file and run `npm test` on the command line.
+
+```json
+{
+  "scripts": {
+    "test": "testmatrix test.js"
+  }
+}
+```
+
+You should see the following [TAP](https://en.wikipedia.org/wiki/Test_Anything_Protocol) output in your console. TAP is a popular format for reporting test results. It's easy for people to read and for machines to parse. See [reporting options](https://github.com/substack/tape#pretty-reporters) for more information.
+
+```
+$ npm test
+
+TAP version 13
+# array.indexOf()
+ok 1 returns the index at which a given element is in the array
+
+1..1
+# tests 1
+# pass 1
+
+# ok
+```
+
+If you find that your tests are starting to look alike, break them up into functions to reduce boilerplate.
+
+```js
+const { equal } = require("testmatrix")
+
+exports.IndexOf = (name, { array, element, expected }) => ({
+  name,
+  assert: equal,
+  actual: array.indexOf(element),
+  expected
+})
+```
+
+Then use it as a test factory.
+
+```js
+const { IndexOf } = require("./IndexOf")
+
+exports.default = {
+  "array.indexOf()": [
+    IndexOf("returns the index at which a given element is in the array", {
+      array: ["A", "B", "C"],
+      element: "A",
+      expected: 0
+    }),
+    IndexOf("returns -1 if the given element is not in the array", {
+      array: ["A", "B", "C"],
+      element: "X",
+      expected: -1
+    })
+  ]
+}
+```
+
+The final step is to add code coverage. Code coverage measures the degree to which our code is executed when our tests run. It tells us how much of our code is actually used. To enable code coverage we'll install [istanbuljs/nyc](https://github.com/istanbuljs/nyc) and edit the test script again.
+
+```json
+{
+  "test": "nyc -r lcov testmatrix test.js && nyc report"
+}
+```
+
+## Transforming Fixtures
+
+A test fixture is what we feed to our tests. It consists of all the values and expectations that determine if our tests will pass or not. Fixtures are framework agnostic while tests are specific to a program. If the program changes we'll have to rewrite some tests, but usually not the fixtures.
+
+Testmatrix allow us to represent tests as plain data, which we can produce from our fixtures using relatively simple map and reduce transformations.
+
+```js
+const { equal } = require("testmatrix")
+
+const IndexOf = ({ name, array, element, expected }) => ({
+  name,
+  assert: equal,
+  actual: array.indexOf(element),
+  expected
+})
+
+exports.default = {
+  "array.indexOf()": [
+    {
+      name: "returns the index at which a given element is in the array",
+      array: ["A", "B", "C"],
+      element: "B",
+      expected: 1
+    },
+    {
+      name: "returns -1 if the given element is not in the array",
+      array: ["A", "B", "C"],
+      element: "Z",
+      expected: -1
+    }
+  ].map(IndexOf)
+}
+```
+
+Or consider the same example using a more succinct syntax based entirely on arrays.
+
+```js
+const { equal } = require("testmatrix")
+
+const IndexOf = ([name, array, element, expected]) => ({
+  name,
+  assert: equal,
+  actual: array.indexOf(element),
+  expected
+})
+
+exports.default = {
+  "array.indexOf()": [
+    [
+      "returns the index at which a given element is in the array",
+      ["A", "B", "C"],
+      "B",
+      1
+    ],
+    [
+      "returns -1 if the given element is not in the array",
+      ["A", "B", "C"],
+      "Z",
+      0
+    ]
+  ].map(IndexOf)
+}
+```
+
+## Asynchronous Tests
+
+We can test side effects and asynchronous code by using a function as the test's actual property. The function takes a `done` function which must be called with the actual value when the operation is complete. You are responsible for creating and destroying any resources you needed to arrive at this value within this function.
+
+```js
+const { equal } = require("testmatrix")
+
+const SlowDivision = ({ dividend, divisor, quotient }) => ({
+  name,
+  assert: equal,
+  actual: done =>
+    setTimeout(() => {
+      done(dividend / divisor)
+    }, 1000),
+  expected: quotient
+})
+
+exports.default = {
+  "slow division": [
+    SlowDivision("divides two numbers slowly", {
+      dividend: 10,
+      divisor: 5,
+      quotient: 2
+    })
+  ]
+}
+```
+
+Your may also return a promise from the actual function enabling you to write `async` functions and making `done` unnecessary. This can be useful if you are testing a promise-based library.
+
+> TODO: Implement this.
+
+```js
+// Example using fetch.
+```
+
+## Using ES Modules
+
+You can use ES modules across your entire test suite via [standard-things/esm](https://github.com/standard-things/esm). First npm install esm. Then
+
+```json
+{
+  "scripts": {
+    "test": "nyc -i esm -r lcov testmatrix test.js && nyc report"
+  }
+}
+```
+
+## License
+
+Testmatrix is MIT licensed. See [LICENSE](LICENSE.md).
