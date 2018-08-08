@@ -8,7 +8,8 @@
   "repository": "jorgebucaran/testmatrix",
   "author": "Jorge Bucaran",
   "files": [
-    "index.js"
+    "index.js",
+    "bin/testmatrix"
   ],
   "keywords": [
     "testmatrix",
