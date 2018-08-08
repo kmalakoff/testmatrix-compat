@@ -32,12 +32,7 @@ exports.default = {
 Every key in the suite object designates a test group. Groups are arrays of tests, where each test is represented as a plain object. To determine if a test passes or not, we'll compare if the actual and expected values match using the specified assert function. You can use your own assert function or choose from the included ones: `equal`, `notEqual`, `deepEqual` and `notDeepEqual`.
 
 ```js
-const {
-  equal,
-  notEqual,
-  deepEqual,
-  notDeepEqual
-} = require("testmatrix")
+const { equal, notEqual, deepEqual, notDeepEqual } = require("testmatrix")
 ```
 
 Now add a test script to your package.json file and run `npm test` on the command line.
@@ -174,7 +169,9 @@ exports.default = {
 
 ## Asynchronous Tests
 
-We can test side effects and asynchronous code by using a function as the test's actual property. The function takes a `done` function which must be called with the actual value when the operation is complete. You are responsible for creating and destroying any resources you needed to arrive at this value within this function.
+We can test side effects and asynchronous code by using a function as the test's actual property. The function receives a function which must be called with the actual value when the operation is done. You are responsible for creating and destroying any resources needed to arrive at this value within this function.
+
+> TODO: Rewrite example using `async` functions instead?
 
 ```js
 const { equal } = require("testmatrix")
@@ -200,17 +197,9 @@ exports.default = {
 }
 ```
 
-Your may also return a promise from the actual function enabling you to write `async` functions and making `done` unnecessary. This can be useful if you are testing a promise-based library.
-
-> TODO: Implement this.
-
-```js
-// Example using fetch.
-```
-
 ## Using ES Modules
 
-You can use ES modules across your entire test suite via [standard-things/esm](https://github.com/standard-things/esm). First npm install esm. Then
+You can use ES modules across your entire test suite via [standard-things/esm](https://github.com/standard-things/esm).
 
 ```json
 {
