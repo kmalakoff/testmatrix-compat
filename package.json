@@ -1,7 +1,7 @@
 {
   "name": "testmatrix",
   "description": "Declarative test runner for JavaScript.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "index.js",
   "bin": "bin/testmatrix",
   "license": "MIT",
