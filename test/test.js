@@ -1,4 +1,4 @@
-const { equal } = require("..")
+const equal = require("..").equal
 
 exports.default = {
   wip: [

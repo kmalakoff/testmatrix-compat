@@ -1,3 +1,5 @@
+"use strict"
+
 const keys = Object.keys
 const isArray = Array.isArray
 const hasProp = Object.hasOwnProperty
