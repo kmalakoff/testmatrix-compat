@@ -176,7 +176,7 @@ We can test side effects and asynchronous code by using a function as the test's
 ```js
 const { equal } = require("testmatrix")
 
-const SlowDivision = ({ dividend, divisor, quotient }) => ({
+const SlowDivision = ({ name, dividend, divisor, quotient }) => ({
   name,
   assert: equal,
   actual: done =>
@@ -188,7 +188,8 @@ const SlowDivision = ({ dividend, divisor, quotient }) => ({
 
 exports.default = {
   "slow division": [
-    SlowDivision("divides two numbers slowly", {
+    SlowDivision({
+      name:"divides two numbers slowly",
       dividend: 10,
       divisor: 5,
       quotient: 2
