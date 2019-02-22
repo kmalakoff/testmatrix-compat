@@ -29,7 +29,7 @@ exports.default = {
 }
 ```
 
-Every key in the suite object designates a test group. Groups are arrays of tests, where each test is represented as a plain object. To determine if a test passes or not, we'll compare if the actual and expected values match using the specified assert function. You can use your own assert function or choose from the included ones: `equal`, `notEqual`, `deepEqual` and `notDeepEqual`.
+Every key in your suite object designates a test group. Groups are arrays of tests, where each test is represented as an object. To determine if a test passes or not, we'll compare if the actual and expected values match using the specified assert function. You can use your own assert function or choose from the included ones: `equal`, `notEqual`, `deepEqual` and `notDeepEqual`.
 
 ```js
 const { equal, notEqual, deepEqual, notDeepEqual } = require("testmatrix")
@@ -95,7 +95,7 @@ exports.default = {
 }
 ```
 
-The final step is to add code coverage. Code coverage measures the degree to which our code is executed when our tests run. It tells us how much of our code is actually used. To enable code coverage we'll install [istanbuljs/nyc](https://github.com/istanbuljs/nyc) and edit the test script again.
+The final step is to add code coverage. Code coverage measures the degree to which our code is executed when our tests run. It tells us how much of our code is used. To enable code coverage, we'll install [istanbuljs/nyc](https://github.com/istanbuljs/nyc) and edit the test script again.
 
 ```json
 {
@@ -105,9 +105,9 @@ The final step is to add code coverage. Code coverage measures the degree to whi
 
 ## Transforming Fixtures
 
-A test fixture is what we feed to our tests. It consists of all the values and expectations that determine if our tests will pass or not. Fixtures are framework agnostic while tests are specific to a program. If the program changes we'll have to rewrite some tests, but usually not the fixtures.
+A test fixture is what we feed to our tests. It consists of all the values and expectations that determine if our tests pass or not. Fixtures are framework agnostic while tests are specific to a program. If the program changes we'll have to rewrite some tests, but usually not the fixtures.
 
-Testmatrix allow us to represent tests as plain data, which we can produce from our fixtures using relatively simple map and reduce transformations.
+Testmatrix allows us to represent tests as plain data, which we can produce from our fixtures using a relatively simple map and reduce transformations.
 
 ```js
 const { equal } = require("testmatrix")
@@ -137,7 +137,7 @@ exports.default = {
 }
 ```
 
-Or consider the same example using a more succinct syntax based entirely on arrays.
+Alternatively, consider the same example using a more succinct syntax based entirely on arrays.
 
 ```js
 const { equal } = require("testmatrix")
@@ -169,7 +169,7 @@ exports.default = {
 
 ## Asynchronous Tests
 
-We can test side effects and asynchronous code by using a function as the test's actual property. The function receives a function which must be called with the actual value when the operation is done. You are responsible for creating and destroying any resources needed to arrive at this value within this function.
+We can test side effects and asynchronous code by using a function as the test's actual property. The function receives a function which must be called with the actual value after the operation is done. You are responsible for creating and destroying any resources needed to arrive at this value within this function.
 
 > TODO: Rewrite example using `async` functions instead?
 
@@ -189,7 +189,7 @@ const SlowDivision = ({ name, dividend, divisor, quotient }) => ({
 exports.default = {
   "slow division": [
     SlowDivision({
-      name:"divides two numbers slowly",
+      name: "divides two numbers slowly",
       dividend: 10,
       divisor: 5,
       quotient: 2
@@ -212,4 +212,4 @@ You can use ES modules across your entire test suite via [standard-things/esm](h
 
 ## License
 
-Testmatrix is MIT licensed. See [LICENSE](LICENSE.md).
+[MIT](LICENSE.md)
