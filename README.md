@@ -1,18 +1,14 @@
-# Testmatrix
-
-[![Travis CI](https://img.shields.io/travis/jorgebucaran/testmatrix/master.svg)](https://travis-ci.org/jorgebucaran/testmatrix)
-[![Codecov](https://img.shields.io/codecov/c/github/jorgebucaran/testmatrix/master.svg)](https://codecov.io/gh/jorgebucaran/testmatrix)
-[![npm](https://img.shields.io/npm/v/testmatrix.svg)](https://www.npmjs.org/package/testmatrix)
+# Testmatrix [![npm](https://img.shields.io/npm/v/testmatrix.svg?label=&color=0080FF)](https://github.com/jorgebucaran/testmatrix/releases/latest)
 
 Testmatrix is a declarative test runner for JavaScript.
 
 ## Installation
 
-<pre>
-npm i <a href=https://www.npmjs.com/package/testmatrix>testmatrix</a>
-</pre>
+```console
+npm i testmatrix
+```
 
-## Getting Started
+## Getting started
 
 Let's start with a basic test to learn how Testmatrix works. Create a new `test.js` file and export your test suite.
 
@@ -47,7 +43,7 @@ Now add a test script to your package.json file and run `npm test` on the comman
 
 You should see the following [TAP](https://en.wikipedia.org/wiki/Test_Anything_Protocol) output in your console. TAP is a popular format for reporting test results. It's easy for people to read and for machines to parse. See [reporting options](https://github.com/substack/tape#pretty-reporters) for more information.
 
-```
+```console
 $ npm test
 
 TAP version 13
