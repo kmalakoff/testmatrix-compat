@@ -1,11 +1,11 @@
 "use strict"
 
-const keys = Object.keys
-const isArray = Array.isArray
-const hasProp = Object.hasOwnProperty
+var keys = Object.keys
+var isArray = Array.isArray
+var hasProp = Object.hasOwnProperty
 
-const deepEqual = (a, b) => {
-  let i, k, ks, aType, bType
+var deepEqual = function (a, b) {
+  var i, k, ks, aType, bType
 
   if (
     typeof a == "object" &&
@@ -43,8 +43,8 @@ const deepEqual = (a, b) => {
 }
 
 module.exports = {
-  equal: (a, b) => a === b,
-  notEqual: (a, b) => a !== b,
+  equal: function (a, b) { return a === b },
+  notEqual: function (a, b) { return a !== b },
   deepEqual: deepEqual,
-  notDeepEqual: (a, b) => !deepEqual(a, b)
+  notDeepEqual: function (a, b) { return !deepEqual(a, b); }
 }

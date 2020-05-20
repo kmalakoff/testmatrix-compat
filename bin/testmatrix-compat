@@ -2,25 +2,25 @@
 
 "use strict"
 
-const cwd = process.cwd()
-const files = process.argv.slice(2)
-const resolve = require("path").resolve
+var cwd = process.cwd()
+var files = process.argv.slice(2)
+var resolve = require("path").resolve
 
-let index = 0
-let total = 0
-let failed = 0
-let suites = []
+var index = 0
+var total = 0
+var failed = 0
+var suites = []
 
 setTimeout(function next() {
   if (suites[index].count === suites[index].tests.length) {
-    const tests = suites[index].tests
+    var tests = suites[index].tests
 
     if (index === 0) console.log("TAP version 13")
 
     console.log("# " + suites[index].name)
 
-    for (let i = 0; i < tests.length; i++) {
-      const test = tests[i]
+    for (var i = 0; i < tests.length; i++) {
+      var test = tests[i]
 
       if (test.passed) {
         console.log("ok " + (total + 1) + " " + test.name)
@@ -59,24 +59,24 @@ setTimeout(function next() {
   process.exit(failed)
 })
 
-for (let i = 0; i < files.length; i++) {
-  const suite = require(resolve(cwd, files[i])).default
+for (var i = 0; i < files.length; i++) {
+  var suite = require(resolve(cwd, files[i])).default
 
-  for (let k = 0, names = Object.keys(suite); k < names.length; k++) {
-    const tests = suite[names[k]]
-    const index = suites.push({
+  for (var k = 0, names = Object.keys(suite); k < names.length; k++) {
+    var tests = suite[names[k]]
+    var l = suites.push({
       name: names[k],
       tests: [],
       count: tests.length
     })
 
-    for (let t = 0; t < tests.length; t++) {
-      const done = actual => {
-        const passed = test.assert(actual, test.expected)
+    for (var t = 0; t < tests.length; t++) {
+      var done = function (actual) {
+        var passed = test.assert(actual, test.expected)
 
         if (!passed) failed++
 
-        suites[index - 1].tests.push({
+        suites[l - 1].tests.push({
           name: test.name || "",
           stack: passed ? null : new Error().stack,
           passed: passed,
@@ -85,7 +85,7 @@ for (let i = 0; i < files.length; i++) {
           operator: test.assert.name
         })
       }
-      const test = tests[t]
+      var test = tests[t]
 
       if (typeof test.actual === "function") {
         test.actual(done)
