@@ -24,6 +24,6 @@
     "temp-directory": "./coverage/.nyc_output"
   },
   "devDependencies": {
-    "nyc": "10.2.0"
+    "nyc": "15.1.0"
   }
 }
