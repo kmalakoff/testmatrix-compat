@@ -13,3 +13,7 @@ coverage
 
 # Dist
 *.gz
+.agents/
+.archive/
+.tmp/
+.cache/
